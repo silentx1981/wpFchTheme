@@ -1,0 +1,11 @@
+{
+  "name": "raffaelwyss/wpfchtheme",
+  "require": {
+    "php": "^7.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "wpFchTheme\\": ["src/"]
+    }
+  }
+}

@@ -1,0 +1,67 @@
+
+
+.navbar
+{
+  padding: 0rem;
+  width: 100%;
+  min-height: 30px;
+
+  background: $colorBgTopMenu;
+  border-top-left-radius: $menuRadius;
+  border-top-right-radius: $menuRadius;
+
+  .menu-item {
+    border-right: 1px solid $colorBorder;
+    padding-left: 5px;
+    padding-right: 5px;
+
+    a, a:hover a:link {
+      color: $colorBorder;
+      text-decoration: none;
+    }
+  }
+
+  .menu-item:hover {
+    background-color: $colorBgTopMenuHover;
+
+    &:first-child {
+      border-top-left-radius: $menuRadius;
+    }
+  }
+
+  .dropdown-menu {
+    background-color: $colorBgTopMenuHover;
+    margin-top: 0px;
+    margin-left: -1px;
+    border-width: 0 1px 1px 1px;
+    border-style: solid;
+    border-color: $colorBorder;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    z-index: 1030;
+
+    .menu-item {
+      border-right: 0px solid $colorBorder;
+    }
+
+    &:last-child {
+      border-bottom-left-radius: $menuRadius;
+      border-bottom-right-radius: $menuRadius;
+    }
+
+  }
+
+  @media (min-width: 768px) {
+    ul.nav li.dropdown:hover ul.dropdown-menu{
+      display: block;
+    }
+  }
+
+  .dropdown-item:hover {
+    background-color: $colorBgTopMenu;
+  }
+
+}
+
+
+
