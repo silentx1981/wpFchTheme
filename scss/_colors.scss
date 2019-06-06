@@ -1,6 +1,7 @@
 
 $colorBgBody: #fff; //#fff; //#1d9d74;
 $colorBgHeader: #32A5FF; //#006fc6;
+$colorBgFch: rgba(11, 90, 181, 0.5);
 
 $colorBgTopMenu: linear-gradient(rgba(255,255,255,.8), rgba(230,230,230,.8)); //linear-gradient(rgba(25,154,255,.6), rgba(35,116,178,.6)); //#199AFF;
 $colorBgTopMenuHover: #fff;
@@ -10,4 +11,9 @@ $colorBgContent: linear-gradient(rgba(255,255,255,.9), rgba(230,230,230,.9));
 
 $colorBody: #000; //#fff;
 
+$colorIndicator: rgba(11, 90, 181, 0.5);
+$colorIndicatorActive: rgba(11, 90, 220, 1);
+
 $boxShadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+$colorBgCardHeader: rgba(11, 90, 181, 0.05);

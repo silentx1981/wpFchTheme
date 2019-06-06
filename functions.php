@@ -1,5 +1,7 @@
 <?php
 
+require __DIR__."/vendor/autoload.php";
+
 global $wp_customize;
 
 // JavaScript-Files
@@ -124,3 +126,24 @@ function background_customize_register($wp_customize) {
 
 add_action( 'customize_register', 'header_customize_register' );
 add_action( 'customize_register', 'background_customize_register');
+
+
+function showPosts()
+{
+	require __DIR__."/vendor/autoload.php";
+	require __DIR__."/src/Posts.php";
+
+	ob_start();
+	$posts = new \wpFchTheme\Posts();
+	$posts->show();
+	return ob_get_clean();
+}
+add_shortcode('showPosts', 'showPosts');
+
+
+
+function wpFchTest()
+{
+	return "<hr>Test wpFch<hr>";
+}
+add_shortcode('wpFch', 'wpFchTest');
