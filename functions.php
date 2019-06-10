@@ -130,8 +130,8 @@ add_action( 'customize_register', 'background_customize_register');
 
 function showPosts()
 {
-	require __DIR__."/vendor/autoload.php";
-	require __DIR__."/src/Posts.php";
+	require_once __DIR__."/vendor/autoload.php";
+	require_once __DIR__."/src/Posts.php";
 
 	ob_start();
 	$posts = new \wpFchTheme\Posts();
@@ -141,9 +141,31 @@ function showPosts()
 add_shortcode('showPosts', 'showPosts');
 
 
-
-function wpFchTest()
+function showPage($attrs = [])
 {
-	return "<hr>Test wpFch<hr>";
+	require_once __DIR__."/vendor/autoload.php";
+	require_once __DIR__."/src/Pages.php";
+
+	ob_start();
+	$pageId = $attrs['pageid'] ?? null;
+	$pages = new \wpFchTheme\Pages();
+	$pages->show($pageId);
+	return ob_get_clean();
 }
-add_shortcode('wpFch', 'wpFchTest');
+add_shortcode('showPage', 'showPage');
+
+function showSponsors($attrs = [])
+{
+	require_once __DIR__."/vendor/autoload.php";
+	require_once __DIR__."/src/Sponsors.php";
+
+	ob_start();
+	$sponsors = new \wpFchTheme\Sponsors();
+	//$sponsors->show();
+	$pageId = $attrs['pageid'] ?? null;
+	$display = $attrs['display'] ?? null;
+	$pages = new \wpFchTheme\Pages();
+	$pages->show($pageId, $display);
+	return ob_get_clean();
+}
+add_shortcode('showSponsors', 'showSponsors');
