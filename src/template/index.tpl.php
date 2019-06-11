@@ -11,7 +11,7 @@
 				<?php endwhile; ?>
 				<?php endif; ?>
 				<div class="col-md-4">
-					<?php echo do_shortcode('[showSponsors pageid="104" display="maxi"]'); ?>
+					<?php echo do_shortcode('[showSponsors pagetitle="Sponsoren" display="maxi"]'); ?>
 				</div>
 			</div>
 		</div>

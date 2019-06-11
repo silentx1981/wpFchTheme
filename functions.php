@@ -163,9 +163,10 @@ function showSponsors($attrs = [])
 	$sponsors = new \wpFchTheme\Sponsors();
 	//$sponsors->show();
 	$pageId = $attrs['pageid'] ?? null;
+	$pageTitle = $attrs['pagetitle'] ?? null;
 	$display = $attrs['display'] ?? null;
 	$pages = new \wpFchTheme\Pages();
-	$pages->show($pageId, $display);
+	$pages->show($pageId, $pageTitle, $display);
 	return ob_get_clean();
 }
 add_shortcode('showSponsors', 'showSponsors');

@@ -5,8 +5,12 @@ namespace wpFchTheme;
 class Pages
 {
 
-	public function show($pageId, $display = 'mini')
+	public function show($pageId, $pageTitle = null, $display = 'mini')
 	{
+		if ($pageId === null && $pageTitle !== null) {
+			$page = get_page_by_title($pageTitle);
+			$pageId = $page->ID;
+		}
 		if ($pageId === null)
 			return "";
 
