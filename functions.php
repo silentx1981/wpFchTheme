@@ -170,3 +170,19 @@ function showSponsors($attrs = [])
 	return ob_get_clean();
 }
 add_shortcode('showSponsors', 'showSponsors');
+
+function showRotation($attrs = [])
+{
+	require_once __DIR__."/vendor/autoload.php";
+	require_once __DIR__."/src/Rotation.php";
+
+	ob_start();
+	$json = $attrs['json'] ?? null;
+	$rotation = new \wpFchTheme\Rotation();
+	$json = str_replace('%5b', '[', $json);
+	$json = str_replace('%5d', ']', $json);
+	$json = str_replace("'", '"', $json);
+	$rotation->show(json_decode($json, true));
+	return ob_get_clean();
+}
+add_shortcode('showRotation', "showRotation");
