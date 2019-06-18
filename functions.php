@@ -186,3 +186,34 @@ function showRotation($attrs = [])
 	return ob_get_clean();
 }
 add_shortcode('showRotation', "showRotation");
+
+function showSpielbetrieb($attrs = [])
+{
+	require_once __DIR__."/vendor/autoload.php";
+	require_once __DIR__."/src/Spielbetrieb.php";
+
+	ob_start();
+	$url = $attrs['url'] ?? null;
+	$spielbetrieb = new \wpFchTheme\Spielbetrieb();
+	$spielbetrieb->show($url);
+	return ob_get_clean();
+}
+add_shortcode('showSpielbetrieb', 'showSpielbetrieb');
+
+function showPerson($attrs = [])
+{
+	require_once __DIR__."/vendor/autoload.php";
+	require_once __DIR__."/src/Person.php";
+
+	ob_start();
+	$personData = [];
+	$personData['name'] = $attrs['name'] ?? null;
+	$personData['vorname'] = $attrs['vorname'] ?? null;
+	$personData['mail'] = $attrs['mail'] ?? null;
+	$personData['mobile'] = $attrs['mobile'] ?? null;
+	$personData['phone'] = $attrs['phone'] ?? null;
+	$person = new \wpFchTheme\Person();
+	$person->show($personData);
+	return ob_get_clean();
+}
+add_shortcode('showPerson', 'showPerson');
