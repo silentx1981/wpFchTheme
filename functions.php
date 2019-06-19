@@ -86,6 +86,45 @@ function header_customize_register($wp_customize) {
 		))
 	);
 
+	$wp_customize->add_setting('image_header_background3', array(
+		'default' => '',
+		'type' => 'theme_mod',
+		'capability' => 'edit_theme_options',
+	));
+
+	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'image_header_background3', array(
+			'label' => __( 'Header-Hintergrund-Bild3', 'theme-slug' ),
+			'section' => 'section_header',
+			'settings' => 'image_header_background3',
+		))
+	);
+
+	$wp_customize->add_setting('image_header_background4', array(
+		'default' => '',
+		'type' => 'theme_mod',
+		'capability' => 'edit_theme_options',
+	));
+
+	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'image_header_background4', array(
+			'label' => __( 'Header-Hintergrund-Bild4', 'theme-slug' ),
+			'section' => 'section_header',
+			'settings' => 'image_header_background4',
+		))
+	);
+
+	$wp_customize->add_setting('image_header_background5', array(
+		'default' => '',
+		'type' => 'theme_mod',
+		'capability' => 'edit_theme_options',
+	));
+
+	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'image_header_background5', array(
+			'label' => __( 'Header-Hintergrund-Bild5', 'theme-slug' ),
+			'section' => 'section_header',
+			'settings' => 'image_header_background5',
+		))
+	);
+
 	$wp_customize->add_setting('image_header_logo', array(
 		'default' => '',
 		'type' => 'theme_mod',
@@ -124,8 +163,31 @@ function background_customize_register($wp_customize) {
 
 }
 
+function allgemein_customize_register($wp_customize) {
+
+	$wp_customize->add_section('section_allgemein', array(
+		"title" => 'Allgemein',
+		"priority" => 36,
+		"description" => __( 'Allgemeine Einstellungen', 'theme-slug' )
+	));
+
+	$wp_customize->add_setting('default_avatar', array(
+		'default' => '',
+		'type' => 'theme_mod',
+		'capability' => 'edit_theme_options',
+	));
+
+	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'default_avatar', array(
+			'label' => __( 'Default Avatar', 'theme-slug' ),
+			'section' => 'section_allgemein',
+			'settings' => 'default_avatar',
+		))
+	);
+}
+
 add_action( 'customize_register', 'header_customize_register' );
 add_action( 'customize_register', 'background_customize_register');
+add_action( 'customize_register', 'allgemein_customize_register');
 
 
 function showPosts()
@@ -212,6 +274,7 @@ function showPerson($attrs = [])
 	$personData['mail'] = $attrs['mail'] ?? null;
 	$personData['mobile'] = $attrs['mobile'] ?? null;
 	$personData['phone'] = $attrs['phone'] ?? null;
+	$personData['avatar'] = $attrs['avatar'] ?? null;
 	$person = new \wpFchTheme\Person();
 	$person->show($personData);
 	return ob_get_clean();

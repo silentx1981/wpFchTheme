@@ -31,16 +31,13 @@
 		</nav>
 		<div id="fchSwiper" class="sticky-top d-none d-md-block carousel slide" data-ride="carousel">
 			<div class="carousel-inner">
-				<div class="carousel-item active" style="height: 150px; background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url(<?php echo get_theme_mod('image_header_background'); ?>);background-repeat: no-repeat;background-size: 100% 100%;)">
-					<a href="<?php bloginfo('url'); ?>">
-						<img src="<?php echo get_theme_mod('image_header_logo'); ?>" style="position:absolute; top:20px; left:10px; height: 120px;z-index:9999">
-					</a>
-				</div>
-				<div class="carousel-item" style="height: 150px; background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url(<?php echo get_theme_mod('image_header_background2'); ?>);background-repeat: no-repeat;background-size: 100% 100%; )">
-					<a href="<?php bloginfo('url'); ?>">
-						<img src="<?php echo get_theme_mod('image_header_logo'); ?>" style="position:absolute; top:20px; left:10px; height: 120px;z-index:9999">
-					</a>
-				</div>
+				<?php foreach($headerImages as $image) { ?>
+					<div class="carousel-item <?php echo $image['active']; ?>" style="height: 150px; background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url(<?php echo $image['url']; ?>);background-repeat: no-repeat;background-size: 100% 100%;)">
+						<a href="<?php bloginfo('url'); ?>">
+							<img src="<?php echo get_theme_mod('image_header_logo'); ?>" style="position:absolute; top:20px; left:10px; height: 120px;z-index:9999">
+						</a>
+					</div>
+				<?php } ?>
 			</div>
 		</div>
 	</div>

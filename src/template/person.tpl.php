@@ -1,7 +1,7 @@
 
 <div class="col-sm-6">
 	<div class="card">
-		<img src="http://192.168.64.2/wordpress/wp-content/uploads/2019/06/avatar.png" class="card-img-top" alt="<?php echo "$personData[vorname] $personData[name]" ?>">
+		<img src="<?php echo $personData['avatar']; ?>" class="card-img-top" alt="<?php echo "$personData[vorname] $personData[name]" ?>">
 		<div class="card-body">
 			<h5 class="card-title"><?php echo "$personData[vorname] $personData[name]" ?></h5>
 			<?php if ($personData['mail'] !== null) { ?>
