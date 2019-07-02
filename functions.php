@@ -275,6 +275,7 @@ function showPerson($attrs = [])
 	$personData['mobile'] = $attrs['mobile'] ?? null;
 	$personData['phone'] = $attrs['phone'] ?? null;
 	$personData['avatar'] = $attrs['avatar'] ?? null;
+	$personData['funktion'] = $attrs['funktion'] ?? null;
 	$person = new \wpFchTheme\Person();
 	$person->show($personData);
 	return ob_get_clean();

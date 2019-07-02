@@ -1,9 +1,16 @@
 
-<div class="col-sm-6">
+<div class="col-sm-12 box-spacing-bottom">
 	<div class="card">
-		<img src="<?php echo $personData['avatar']; ?>" class="card-img-top" alt="<?php echo "$personData[vorname] $personData[name]" ?>">
+		<div class="card-header" style="text-align: center">
+			<img src="<?php echo $personData['avatar']; ?>" style="width: 200px; margin: auto" class="card-img-top bg-primary" alt="<?php echo "$personData[vorname] $personData[name]" ?>">
+		</div>
 		<div class="card-body">
-			<h5 class="card-title"><?php echo "$personData[vorname] $personData[name]" ?></h5>
+			<h5 class="card-title" style="margin-bottom: 0rem;"><?php echo "$personData[vorname] $personData[name]" ?></h5>
+			<?php if ($personData['funktion'] !== null) { ?>
+				<p>
+					<em class="text-info"><?php echo $personData['funktion']; ?></em>
+				</p>
+			<?php } ?>
 			<?php if ($personData['mail'] !== null) { ?>
 				<div>
 					<a href="javascript:open_mailto('<?php echo $personData['maillink']; ?>')"><i class="far fa-envelope fa-fw"></i> <?php echo $personData['mail']; ?></a>
