@@ -19,6 +19,7 @@ class Header
 		}
 		$random = rand(0, count($headerImages) - 1);
 		$headerImages[$random]['active'] = 'active';
+		$headerImages = [$headerImages[$random]];
 		include_once('template/header.tpl.php');
 	}
 
