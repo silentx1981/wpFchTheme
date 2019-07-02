@@ -244,7 +244,7 @@ function showRotation($attrs = [])
 	$json = str_replace('%5b', '[', $json);
 	$json = str_replace('%5d', ']', $json);
 	$json = str_replace("'", '"', $json);
-	$rotation->show(json_decode($json, true));
+	$rotation->show(json_decode($json, true), true);
 	return ob_get_clean();
 }
 add_shortcode('showRotation', "showRotation");
