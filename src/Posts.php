@@ -17,7 +17,7 @@ class Posts
 			'exclude' => '',
 			'meta_key' => '',
 			'meta_value' =>'',
-			'post_type' => 'post',
+			'post_type' => 'blog_post',
 			'post_status' => 'publish',
 			'suppress_filters' => true
 		);
