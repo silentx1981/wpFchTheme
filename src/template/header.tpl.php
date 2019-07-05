@@ -7,7 +7,7 @@
 		<link rel="pingback" href="<?php bloginfo('pingback_url'); ?>" />
 		<?php wp_head(); ?>
 	</head>
-	<body  style="height: 100%; background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url(<?php echo get_theme_mod('image_background'); ?>);background-repeat: no-repeat;background-size: 100% 100%; )">
+	<body  style="background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url(<?php echo get_theme_mod('image_background'); ?>);background-repeat: no-repeat;background-attachment: fixed; )">
 	<div>&nbsp;</div>
 	<div class="container">
 		<nav class="navbar navbar-expand-md navbar-light">
