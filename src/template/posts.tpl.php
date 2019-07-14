@@ -14,20 +14,23 @@
 		foreach($posts as $value) { ?>
 			<div class="carousel-item <?php echo $value['active'] ?? ''; ?>">
 
-				<div>
-					<h4 class="blog-title">
-						<a class="small" href="<?php echo $value['guid']; ?>"><i class="fas fa-external-link-alt"></i></a>
-						<?php echo $value['post_title']; ?>
-					</h4>
-				</div>
-				<small>
-					<?php echo date('d.m.Y H:i', mktime((int) $value['post_date'])).' | '.$value['displayName']; ?>
-				</small>
-				<hr>
-				<div style="overflow: hidden; height: 100px; max-height: 100px; min-height: 100px;">
-					<?php echo $value['post_content']; ?>
-				</div>
-				<div style="height: 50px;"></div>
+                <div style="overflow: hidden; height: 300px; max-height: 300px; min-height: 300px;">
+                    <div>
+                        <h4 class="blog-title">
+                            <a class="small" href="<?php echo $value['guid']; ?>"><i class="fas fa-external-link-alt"></i></a>
+			                <?php echo $value['post_title']; ?>
+                        </h4>
+                    </div>
+                    <small>
+		                <?php echo date('d.m.Y H:i', mktime((int) $value['post_date'])).' | '.$value['displayName']; ?>
+                    </small>
+                    <hr>
+                    <div style="overflow: hidden; height: 250px; max-height: 250px; min-height: 250px;">
+		                <?php echo $value['post_content']; ?>
+                    </div>
+                </div>
+                <div style="height: 50px;"></div>
+
 
 			</div>
 			<?php
