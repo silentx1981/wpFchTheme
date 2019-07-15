@@ -29,7 +29,7 @@
 			?>
 
 		</nav>
-		<div id="fchSwiper" class="sticky-top d-none d-md-block carousel slide" data-ride="carousel">
+		<div id="fchSwiper" class="sticky-top d-md-block carousel slide" data-ride="carousel">
 			<div class="carousel-inner">
 				<?php foreach($headerImages as $image) { ?>
 					<div class="carousel-item <?php echo $image['active']; ?>" style="height: 150px; background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url(<?php echo $image['url']; ?>);background-repeat: no-repeat;background-size: 100% 100%;)">
