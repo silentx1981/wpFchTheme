@@ -8,15 +8,15 @@
                 </a>
             </h4>
         </div>
-	    <?php if($post_display==='mini') { ?>
-            <div>
-			    <?php echo $post_content ?>
-            </div>
-	    <?php } else { ?>
-            <div>
-			    <?php echo $post_content ?>
-            </div>
-	    <?php } ?>
     <?php } ?>
+	<?php if($post_display==='mini') { ?>
+        <div>
+			<?php echo $post_content ?>
+        </div>
+	<?php } else { ?>
+        <div>
+			<?php echo $post_content ?>
+        </div>
+	<?php } ?>
 
 </div>
