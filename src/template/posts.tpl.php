@@ -24,7 +24,7 @@
                         </h4>
                     </div>
                     <small>
-		                <?php echo date('d.m.Y H:i', mktime((int) $value['post_date'])).' | '.$value['displayName']; ?>
+		                <?php echo date('d.m.Y H:i', strtotime($value['post_date'])).' | '.$value['displayName']; ?>
                     </small>
                     <hr>
                     <div style="overflow: hidden; height: 250px; max-height: 250px; min-height: 250px;">
