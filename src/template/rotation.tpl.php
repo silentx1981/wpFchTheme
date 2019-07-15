@@ -1,4 +1,3 @@
-<hr>
 <div id="fchSponsorsSwiper" class="sticky-top carousel slide" data-ride="carousel" data-interval="10000">
 
 	<div class="carousel-inner">
