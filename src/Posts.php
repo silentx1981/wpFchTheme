@@ -8,7 +8,7 @@ class Posts
 	public function show()
 	{
 		$args = array(
-			'numberposts' => 10,
+			'numberposts' => 5,
 			'offset' => 0,
 			'category' => 0,
 			'orderby' => 'post_date',
