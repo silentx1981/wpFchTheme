@@ -262,6 +262,18 @@ function showSpielbetrieb($attrs = [])
 }
 add_shortcode('showSpielbetrieb', 'showSpielbetrieb');
 
+function showSpielbetriebData($attrs = [])
+{
+	require_once __DIR__."/vendor/autoload.php";
+	require_once __DIR__."/src/Spielbetrieb.php";
+
+	ob_start();
+	$spielbetrieb = new \wpFchTheme\Spielbetrieb();
+	$spielbetrieb->showOnlyData($attrs);
+	return ob_get_clean();
+}
+add_shortcode('showSpielbetriebData', 'showSpielbetriebData');
+
 function showPerson($attrs = [])
 {
 	require_once __DIR__."/vendor/autoload.php";
