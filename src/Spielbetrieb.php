@@ -22,6 +22,7 @@ class Spielbetrieb
 		if ($url === null)
 			return '';
 
+		$locale = json_decode(file_get_contents(get_template_directory().'/src/locale/de.json'), true);
 		$data = $this->getData($url, $file);
 		$spiele = json_decode($data, true);
 		include('template/spielbetrieb.tpl.php');
