@@ -8,7 +8,14 @@ foreach ($spiele as $spieldatum => $spiel) {
         </strong><br><?php
     }
     ?>
-    <?php echo date('H:i', strtotime($spieldatum)).' '.$spiel['TeamA'].' - '.$spiel['TeamB']."<br>"; ?>
+    <?php
+        if($spiel['Status'] === 'G') {
+	        echo '<s>'.date('H:i', strtotime($spieldatum)).' '.$spiel['TeamA'].' - '.$spiel['TeamB']."</s><br>";
+	        echo "<small>nicht gespielt (Gegner)</small><br>";
+        } else {
+	        echo date('H:i', strtotime($spieldatum)).' '.$spiel['TeamA'].' - '.$spiel['TeamB']." | ".($spiel['Goals'][0] ?? '')." ".($spiel['Goals'][1] ?? '')." ".($spiel['Goals'][2] ?? '')."<br>";
+        }
+	?>
 <?php
 }
 ?>
