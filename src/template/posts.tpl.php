@@ -28,7 +28,7 @@
                     </small>
                     <hr>
                     <div style="overflow: hidden; height: 250px; max-height: 250px; min-height: 250px;">
-		                <?php echo $value['post_content']; ?>
+		                <?php echo do_shortcode($value['post_content']); ?>
                     </div>
                 </div>
                 <div style="height: 50px;"></div>
