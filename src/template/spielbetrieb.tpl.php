@@ -9,27 +9,25 @@ foreach ($spiele as $spieldatum => $spiel) {
     }
     ?><div class="list-group-item">
         <div class="row">
-            <div class="col-md-1 col-sm-12 col-12">
+            <div class="col-12">
                 <?php echo date('H:i', strtotime($spieldatum)); ?>
             </div>
-            <div class="col-md-8 col-sm-10 col-10">
+            <div class="col-10">
                 <div class="row">
-                    <div class="col-md-5 col-sm-12">
+                    <div class="col-12">
                         <?php echo $spiel['TeamA']; ?>
                     </div>
-                    <div class="col-md-2 d-none d-md-block">-</div>
-                    <div class="col-md-5 col-sm-12">
+                    <div class="col-12">
                         <?php echo $spiel['TeamB']; ?>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 col-sm-2 col-2">
+            <div class="col-2">
                 <div class="row">
-                    <div class="col-md-3 col-sm-12">
-                        <span class="text-right"><?php echo ($spiel['Goals'][0] ?? ''); ?></span>
+                    <div class="col-12">
+                        <span class="text-right"><?php echo ($spiel['Goals'][0] ?? ''); ?>22</span>
                     </div>
-                    <div class="col-md-2 d-none d-lg-block d-xl-block"><?php echo ($spiel['Goals'][1] ?? ''); ?></div>
-                    <div class="col-md-3 col-sm-12"><?php echo ($spiel['Goals'][2] ?? ''); ?></div>
+                    <div class="col-12"><?php echo ($spiel['Goals'][2] ?? ''); ?>88</div>
                 </div>
             </div>
             <?php if ($spiel['Status'] === 'G') { ?>
