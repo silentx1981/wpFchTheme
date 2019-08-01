@@ -25,9 +25,9 @@ foreach ($spiele as $spieldatum => $spiel) {
             <div class="col-2">
                 <div class="row">
                     <div class="col-12">
-                        <span class="text-right"><?php echo ($spiel['Goals'][0] ?? ''); ?>22</span>
+                        <span class="text-right"><?php echo ($spiel['Goals'][0] ?? ''); ?></span>
                     </div>
-                    <div class="col-12"><?php echo ($spiel['Goals'][2] ?? ''); ?>88</div>
+                    <div class="col-12"><?php echo ($spiel['Goals'][2] ?? ''); ?></div>
                 </div>
             </div>
             <?php if ($spiel['Status'] === 'G') { ?>
