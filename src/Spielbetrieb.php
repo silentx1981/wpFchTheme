@@ -33,8 +33,6 @@ class Spielbetrieb
 		if ($file === null)
 			return $this->loadUrlData($url);
 
-		$this->loadUrlData($url);
-
 		$dir = get_template_directory()."/json";
 		$filePath = "$dir/$file";
 		$now = new DateTime();
