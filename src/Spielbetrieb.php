@@ -51,36 +51,121 @@ class Spielbetrieb
 	private function loadUrlData($url)
 	{
 		$content = file_get_contents($url);
-		$pos1 = mb_strpos($content, '<div class="row nisObjRD">');
-		$pos2 = mb_strpos($content, '<footer');
-		$content = mb_substr($content, $pos1, $pos2 - $pos1, 'UTF-8');
+		$content = $this->getContentData($content);
 		$content = preg_replace('/\&nbsp;/', ' ', $content);
 		$content = preg_replace('#(<br\s*\/?>\s*){1,}#i', '', $content);
-		$content = str_replace('<span class="sppStatusText">nicht gespielt (Gegner)</span>', 'SpielStatus=G', $content);
+		$content = preg_replace('/\&/', '', $content);
+		//$content = str_replace('<span class="sppStatusText">nicht gespielt (Gegner)</span>', 'SpielStatus=G', $content);
 
-		$xml = simplexml_load_string($content);
-		$json = json_encode($xml);
-		$array = json_decode($json, true);
+		do {
+			$divCount = mb_substr_count($content, '<div');
+			$divCountSlash = mb_substr_count($content, '</div');
+			$divDiff = $divCountSlash - $divCount;
+			if ($divDiff > 0) {
+				$pos = mb_strrpos($content, '</div>');
+				$content = mb_substr($content, 0, $pos);
+			}
+		} while ($divDiff > 0);
+
+		$xmlparser = xml_parser_create();
+		xml_parse_into_struct($xmlparser,$content,$values);
+		xml_parser_free($xmlparser);
 
 		$data = [
 			'datum' => '',
 			'datumzeit' => '',
 			'nextTeam' => '',
-			'nextTor' => '',
+			'typ' => '',
 			'spiele' => [],
 		];
-		return json_encode($this->processArrayData($array, $data)['spiele'] ?? []);
+
+		return json_encode($this->processContentToData($values, $data)['spiele']);
+	}
+
+	private function processContentToData($array, $data)
+	{
+		foreach ($array as $key => $value) {
+
+			if ($value['tag'] === 'H4')
+				$data['spiele'] = [];
+			if ($value['tag'] === 'H4' && trim($value['value']) === 'Aktuelle Spiele')
+				$data['typ'] = 'AS';
+
+			// Datum
+			$datum = $this->processDatumToDate($value['value'] ?? '');
+			if ($datum !== null) {
+				$data['datum'] = $datum;
+				$data['datumzeit'] = $datum." 00:00";
+			} else if ($data['datum'] !== '' && $data['typ'] === '') {
+				$data['datumzeit'] = $data['datum']." ".trim(($value['value'] ?? ''));
+				$data['spiele'][$data['datumzeit']] = [
+					"TeamA" => '',
+					"TeamB" => '',
+					"TorA" => '',
+					"TorB" => '',
+					"Status" => '',
+				];
+				$data['datum'] = '';
+			} else if ($data['typ'] === 'AS' && preg_match('/^([0-9:]){5}$/', trim(($value['value'] ?? '')))) {
+				$data['datumzeit'] = $data['datum']." ".trim($value['value']);
+				$data['spiele'][$data['datumzeit']] = [
+					"TeamA" => '',
+					"TeamB" => '',
+					"TorA" => '',
+					"TorB" => '',
+					"Status" => '',
+				];
+			}
+
+			$class = $value['attributes']['CLASS'] ?? '';
+			preg_match('/(team[AB])/', $class, $team);
+			preg_match('/(tor[AB])/', $class, $tor);
+			if (($team[0] ?? '') !== '')
+				$data['nextTeam'] = $team[0];
+			if ($data['nextTeam'] !== '' && $class === 'tabMyTeam') {
+				$team = ($data['nextTeam'] === 'teamA') ? 'TeamA' : 'TeamB';
+				$data['spiele'][$data['datumzeit']][$team] = $value['value'] ?? '';
+				$data['nextTeam'] = '';
+			} else if ($data['nextTeam'] !== '' && $class === 'ranCteamSpan') {
+				$team = ($data['nextTeam'] === 'teamA') ? 'TeamA' : 'TeamB';
+				$data['spiele'][$data['datumzeit']][$team] = $value['value'] ?? '';
+				$data['nextTeam'] = '';
+			}
+			if (($tor[0] ?? '') !== '') {
+				$tor = ($tor[0] === 'torA') ? 'TorA' : 'TorB';
+				$data['spiele'][$data['datumzeit']][$tor] = $value['value'] ?? '';
+			}
+			if ($class === 'sppStatusText')
+				$data['spiele'][$data['datumzeit']]['Status'] = $value['value'] ?? '';
+		}
+		return $data;
+	}
+
+	private function getContentData($content)
+	{
+		$pos1 = mb_strrpos($content, '<div class="row nisObjRD">');
+		$pos2 = mb_strpos($content, '<footer');
+		$pos3 = mb_strpos($content, '<aside id="footer-widgets"');
+		if ($pos3 < $pos2)
+			$pos2 = $pos3;
+		if (!$pos1)
+			return $content;
+		if (!$pos2)
+			$pos2 = mb_strlen($content);
+		$content = mb_substr($content, $pos1, $pos2 - $pos1, 'UTF-8');
+
+		return $this->getContentData($content);
 	}
 
 	private function processArrayData($array, $data)
 	{
-
 		foreach ($array as $key => $value) {
-			if ($key === 'h4' && trim($value) === 'Aktuelle Spiele')
+			if ($key === 'h4' && !isset($data['spiele']))
 				$data['spiele'] = [];
 			$datum = $this->processDatumToDate($value);
 			if ($datum !== null) {
 				$data['datum'] = $datum;
+				$data['datumzeit'] = $data['datum']." 00:00";
 			}
 			$status = $this->processStatus($value);
 			if (!is_array($value) && preg_match('/^([0-9:]){5}$/', trim($value))) {

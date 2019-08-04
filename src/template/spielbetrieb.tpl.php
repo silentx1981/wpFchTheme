@@ -25,25 +25,17 @@ foreach ($spiele as $spieldatum => $spiel) {
             <div class="col-2">
                 <div class="row">
                     <div class="col-12">
-                        <span class="text-right"><?php echo ($spiel['Goals'][0] ?? ''); ?></span>
+                        <span class="text-right"><?php echo ($spiel['TorA'] ?? ''); ?></span>
                     </div>
-                    <div class="col-12"><?php echo ($spiel['Goals'][2] ?? ''); ?></div>
+                    <div class="col-12"><?php echo ($spiel['TorB'] ?? ''); ?></div>
                 </div>
             </div>
-            <?php if ($spiel['Status'] === 'G') { ?>
+            <?php if (isset($spiel['Status']) && $spiel['Status'] !== '') { ?>
                 <div class="col-12 text-danger">
-                    <small><i class="fas fa-exclamation-triangle"></i> nicht gespielt (Gegner)</small>
+                    <small><i class="fas fa-exclamation-triangle"></i> <?php echo $spiel['Status']; ?></small>
                 </div>
-            <?php }
-            elseif ($spiel['Status'] === 'V') { ?>
-            <div class="col-12 text-danger">
-                <small><i class="fas fa-exclamation-triangle"></i> Verschoben</small>
-            </div>
-	        <?php }
-            ?>
+            <?php } ?>
         </div>
     </div><?php
 }
-?></div><?php
-
-?>
+?></div>
