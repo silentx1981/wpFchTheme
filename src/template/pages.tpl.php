@@ -1,4 +1,4 @@
-<div style="overflow: hidden; height: 300px; max-height: 300px; min-height: 300px;">
+<div style="overflow: hidden; height: 600px; max-height: 600px; min-height: 600px;">
     <?php if(isset($post_title)) { ?>
         <div>
             <h4 class="blog-title">

@@ -1,4 +1,4 @@
-<div id="fchPostsSwiper" class="sticky-top carousel slide" data-ride="carousel" data-interval="3000">
+<div id="fchPostsSwiper" class="sticky-top carousel slide" data-ride="carousel" data-interval="6000">
 	<ol class="carousel-indicators" style="color: #ff0000;">
 		<?php
 		foreach($posts as $key =>$value) {
