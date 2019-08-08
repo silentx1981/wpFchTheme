@@ -33,6 +33,8 @@ class Spielbetrieb
 		if ($file === null)
 			return $this->loadUrlData($url);
 
+		$this->loadUrlData($url);
+
 		$dir = get_template_directory()."/json";
 		$filePath = "$dir/$file";
 		$now = new DateTime();
@@ -55,7 +57,6 @@ class Spielbetrieb
 		$content = preg_replace('/\&nbsp;/', ' ', $content);
 		$content = preg_replace('#(<br\s*\/?>\s*){1,}#i', '', $content);
 		$content = preg_replace('/\&/', '', $content);
-		//$content = str_replace('<span class="sppStatusText">nicht gespielt (Gegner)</span>', 'SpielStatus=G', $content);
 
 		do {
 			$divCount = mb_substr_count($content, '<div');
@@ -75,11 +76,14 @@ class Spielbetrieb
 			'datum' => '',
 			'datumzeit' => '',
 			'nextTeam' => '',
+			'rang' => '',
+			'team' => '',
 			'typ' => '',
 			'spiele' => [],
+			'rangliste' => [],
 		];
 
-		return json_encode($this->processContentToData($values, $data)['spiele']);
+		return json_encode($this->processContentToData($values, $data));
 	}
 
 	private function processContentToData($array, $data)
@@ -90,13 +94,15 @@ class Spielbetrieb
 				$data['spiele'] = [];
 			if ($value['tag'] === 'H4' && trim($value['value']) === 'Aktuelle Spiele')
 				$data['typ'] = 'AS';
+			else if ($value['tag'] === 'H4' && trim($value['value']) === 'Team-Spielplan')
+				$data['typ'] = 'TS';
 
 			// Datum
 			$datum = $this->processDatumToDate($value['value'] ?? '');
 			if ($datum !== null) {
 				$data['datum'] = $datum;
 				$data['datumzeit'] = $datum." 00:00";
-			} else if ($data['datum'] !== '' && $data['typ'] === '') {
+			} else if ($data['datum'] !== '' && $data['typ'] === 'TS') {
 				$data['datumzeit'] = $data['datum']." ".trim(($value['value'] ?? ''));
 				$data['spiele'][$data['datumzeit']] = [
 					"TeamA" => '',
@@ -137,6 +143,43 @@ class Spielbetrieb
 			}
 			if ($class === 'sppStatusText')
 				$data['spiele'][$data['datumzeit']]['Status'] = $value['value'] ?? '';
+
+			if (($value['attributes']['CLASS'] ?? '') === 'ranCrang')
+				$data['rang'] = $value['value'] ?? '';
+			if (($value['attributes']['CLASS'] ?? '') === 'ranCteam')
+				$data['nextTeam'] = 'ranCteam';
+			if ($data['nextTeam'] === 'ranCteam' && (($value['tag'] ?? '') === 'B' || ($value['tag'] ?? '') === 'A') && $value['value'] !== '0') {
+				$data['team'] = $value['value'];
+				$data['rangliste'][$value['value']] = [
+					'rang' => $data['rang'],
+					'team' => $value['value'],
+					'spiele' => 0,
+					'siege' => 0,
+					'unentschieden' => 0,
+					'niederlagen' => 0,
+					'strafpunkte' => 0,
+					'tore' => 0,
+					'gegentore' => 0,
+					'punkte' => 0,
+				];
+			}
+			if ($data['team'] !== '' && ($value['attributes']['CLASS'] ?? '') === 'ranCsp')
+				$data['rangliste'][$data['team']]['spiele'] = $value['value'] ?? 0;
+			if ($data['team'] !== '' && ($value['attributes']['CLASS'] ?? '') === 'ranCs')
+				$data['rangliste'][$data['team']]['siege'] = $value['value'] ?? 0;
+			if ($data['team'] !== '' && ($value['attributes']['CLASS'] ?? '') === 'ranCu')
+				$data['rangliste'][$data['team']]['unentschieden'] = $value['value'] ?? 0;
+			if ($data['team'] !== '' && ($value['attributes']['CLASS'] ?? '') === 'ranCn')
+				$data['rangliste'][$data['team']]['niederlagen'] = $value['value'] ?? 0;
+			if ($data['team'] !== '' && ($value['attributes']['CLASS'] ?? '') === 'ranCstrp')
+				$data['rangliste'][$data['team']]['strafpunkte'] = $value['value'] ?? 0;
+			if ($data['team'] !== '' && ($value['attributes']['CLASS'] ?? '') === 'ranCtg')
+				$data['rangliste'][$data['team']]['tore'] = $value['value'] ?? 0;
+			if ($data['team'] !== '' && ($value['attributes']['CLASS'] ?? '') === 'ranCte')
+				$data['rangliste'][$data['team']]['gegentore'] = $value['value'] ?? 0;
+			if ($data['team'] !== '' && ($value['attributes']['CLASS'] ?? '') === 'ranCpt')
+				$data['rangliste'][$data['team']]['punkte'] = $value['value'] ?? 0;
+
 		}
 		return $data;
 	}

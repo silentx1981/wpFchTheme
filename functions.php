@@ -16,6 +16,15 @@ function wps_scripts()
 		true
 	);
 
+	/* Popper */
+	wp_enqueue_script(
+		'popper',
+		get_template_directory_uri() . '/js/popper.min.js',
+		array(),
+		'1.15.0',
+		true
+	);
+
 	/* Bootstrap JS */
 	wp_enqueue_script(
 		'bootstrap',
