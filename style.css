@@ -16722,3 +16722,39 @@ body {
 .navbar .dropdown-item:hover {
   background-color: linear-gradient(rgba(255, 255, 255, 0.8), rgba(230, 230, 230, 0.8));
 }
+
+@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+  .fch-table-responsive thead, .fch-table-responsive tbody, .fch-table-responsive th, .fch-table-responsive td, .fch-table-responsive tr {
+    display: block;
+  }
+  .fch-table-responsive thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+  .fch-table-responsive tr {
+    margin: 0 0 1rem 0;
+  }
+  .fch-table-responsive tr:nth-child(odd) {
+    background: #ccc;
+  }
+  .fch-table-responsive td {
+    border: none;
+    border-bottom: 1px solid #eee;
+    position: relative;
+    padding-left: 50%;
+    text-align: left !important;
+  }
+  .fch-table-responsive td:before {
+    position: absolute;
+    top: 0;
+    left: 6px;
+    width: 45%;
+    padding-right: 10px;
+    white-space: nowrap;
+    text-align: left !important;
+  }
+  .fch-table-responsive td:nth-of-type(n):before {
+    content: attr(data-title);
+  }
+}
