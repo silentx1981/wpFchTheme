@@ -59,6 +59,11 @@ if ($spiele['typ'] === '') {
         <div class="list-group-item">
         <div class="row">
             <div class="col-12">
+                <span class="badge <?php echo $spiel['TypClass']; ?>">
+                    <?php echo $spiel['Typ']; ?>
+                </span>
+            </div>
+            <div class="col-12">
 				<?php echo date('H:i', strtotime($spieldatum)); ?>
             </div>
             <div class="col-10">
