@@ -45,15 +45,15 @@ if ($spiele['typ'] === '') {
 	$lastSpieldatum = '';
 	?>
     <div class="list-group"><?php
-	foreach ($spiele['spiele'] as $spieldatum => $spiel) {
-		if (date('Y-m-d', strtotime($spieldatum)) !== date(
+	foreach ($spiele['spieleliste'] as $spieldatum => $spiel) {
+		if (date('Y-m-d', strtotime($spiel['Datumzeit'])) !== date(
 				'Y-m-d', strtotime($lastSpieldatum)
 			)) {
-			$lastSpieldatum = $spieldatum;
+			$lastSpieldatum = $spiel['Datumzeit'];
 			?><br>
             <div class="list-group-item bg-light"><?php echo $locale['wochentagLong'][date(
-					'N', strtotime($spieldatum)
-				)] . ' ' . date('d.m.Y', strtotime($spieldatum)); ?></div><?php
+					'N', strtotime($spiel['Datumzeit'])
+				)] . ' ' . date('d.m.Y', strtotime($spiel['Datumzeit'])); ?></div><?php
 		}
 		?>
         <div class="list-group-item">
@@ -64,7 +64,7 @@ if ($spiele['typ'] === '') {
                 </span>
             </div>
             <div class="col-12">
-				<?php echo date('H:i', strtotime($spieldatum)); ?>
+				<?php echo date('H:i', strtotime($spiel['Datumzeit'])); ?>
             </div>
             <div class="col-10">
                 <div class="row">
