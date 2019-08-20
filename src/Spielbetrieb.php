@@ -90,6 +90,7 @@ class Spielbetrieb
 		$typ = '';
 		$typclass = '';
 		$spielnummer = '';
+		$nextPunkte = false;
 		foreach ($array as $key => $value) {
 
 			if ($value['tag'] === 'H4')
@@ -189,7 +190,7 @@ class Spielbetrieb
 				$data['rang'] = $value['value'] ?? '';
 			if (($value['attributes']['CLASS'] ?? '') === 'ranCteam')
 				$data['nextTeam'] = 'ranCteam';
-			if ($data['nextTeam'] === 'ranCteam' && (($value['tag'] ?? '') === 'B' || ($value['tag'] ?? '') === 'A') && $value['value'] !== '0') {
+			if (!$nextPunkte && $data['nextTeam'] === 'ranCteam' && (($value['tag'] ?? '') === 'B' || ($value['tag'] ?? '') === 'A') && $value['value'] !== '0') {
 				$data['team'] = $value['value'];
 				$data['rangliste'][$value['value']] = [
 					'rang' => $data['rang'],
@@ -201,7 +202,7 @@ class Spielbetrieb
 					'strafpunkte' => 0,
 					'tore' => 0,
 					'gegentore' => 0,
-					'punkte' => 0,
+					'punkte' => 'x',
 				];
 			}
 			if ($data['team'] !== '' && ($value['attributes']['CLASS'] ?? '') === 'ranCsp')
@@ -218,9 +219,13 @@ class Spielbetrieb
 				$data['rangliste'][$data['team']]['tore'] = $value['value'] ?? 0;
 			if ($data['team'] !== '' && ($value['attributes']['CLASS'] ?? '') === 'ranCte')
 				$data['rangliste'][$data['team']]['gegentore'] = $value['value'] ?? 0;
-			if ($data['team'] !== '' && ($value['attributes']['CLASS'] ?? '') === 'ranCpt')
+			if ($value['tag'] === 'B' && $nextPunkte) {
 				$data['rangliste'][$data['team']]['punkte'] = $value['value'] ?? 0;
-
+				$nextPunkte = false;
+			}
+			if ($data['team'] !== '' && ($value['attributes']['CLASS'] ?? '') === 'ranCpt') {
+				$nextPunkte = true;
+			}
 		}
 		return $data;
 	}
