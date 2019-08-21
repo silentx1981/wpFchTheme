@@ -41,7 +41,10 @@ class Spielbetrieb
 			$filedate = new DateTime(date('Y-m-d H:i:s', filemtime($filePath)));
 		if (!file_exists($filePath) || $now->add(new DateInterval('PT5M')) > $filedate) {
 			$result = $this->loadUrlData($url);
-			file_put_contents($filePath, $result);
+			if ($result !== null)
+				file_put_contents($filePath, $result);
+			else
+				$result = file_get_contents($filePath);
 		} else {
 			$result = file_get_contents($filePath);
 		}
@@ -50,7 +53,7 @@ class Spielbetrieb
 
 	private function loadUrlData($url)
 	{
-		$content = file_get_contents($url);
+		$content = @ file_get_contents($url);
 		$content = $this->getContentData($content);
 		$content = preg_replace('/\&nbsp;/', ' ', $content);
 		$content = preg_replace('#(<br\s*\/?>\s*){1,}#i', '', $content);
@@ -82,7 +85,11 @@ class Spielbetrieb
 			'rangliste' => [],
 		];
 
-		return json_encode($this->processContentToData($values, $data));
+		$content = $this->processContentToData($values, $data);
+		if ($content['spiele'] === [] && $content['rangliste'] === [])
+			return null;
+
+		return json_encode($content);
 	}
 
 	private function processContentToData($array, $data)

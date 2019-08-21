@@ -53,7 +53,18 @@ if ($spiele['typ'] === '') {
 			?><br>
             <div class="list-group-item bg-light"><?php echo $locale['wochentagLong'][date(
 					'N', strtotime($spiel['Datumzeit'])
-				)] . ' ' . date('d.m.Y', strtotime($spiel['Datumzeit'])); ?></div><?php
+				)] . ' ' . date('d.m.Y', strtotime($spiel['Datumzeit'])); ?>
+
+               <?php
+                   if (date('Y-m-d', strtotime($spiel['Datumzeit'])) === date('Y-m-d')) {
+                       ?>
+                           <span class="badge badge-success float-right">
+                               Heute
+                           </span>
+                       <?php
+                   }
+               ?>
+            </div><?php
 		}
 		?>
         <div class="list-group-item">
