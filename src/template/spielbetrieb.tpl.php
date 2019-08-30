@@ -76,13 +76,16 @@ if ($spiele['typ'] === '') {
             </div>
             <div class="col-12">
 				<?php echo date('H:i', strtotime($spiel['Datumzeit'])); ?>
+                <span data-toggle="tooltip" data-placement="top" title="<?php echo $spiel['Location']; ?>">
+                    <i class="fas fa-map-marker-alt"></i>
+                </span>
             </div>
             <div class="col-10">
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-12 <?php if ($spiel['HomeTeam'] === 'TeamA') echo 'font-weight-bold'; ?>">
 						<?php echo $spiel['TeamA']; ?>
                     </div>
-                    <div class="col-12">
+                    <div class="col-12 <?php if ($spiel['HomeTeam'] === 'TeamB') echo 'font-weight-bold'; ?>">
 						<?php echo $spiel['TeamB']; ?>
                     </div>
                 </div>

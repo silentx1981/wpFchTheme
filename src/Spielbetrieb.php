@@ -19,19 +19,22 @@ class Spielbetrieb
 	{
 		$url = $attr['url'] ?? null;
 		$file = $attr['file'] ?? null;
+		$hometeam = $attr['hometeam'] ?? null;
 		if ($url === null)
 			return '';
 
 		$locale = json_decode(file_get_contents(get_template_directory().'/src/locale/de.json'), true);
-		$data = $this->getData($url, $file);
+		$data = $this->getData($url, $file, $hometeam);
 		$spiele = json_decode($data, true);
 		include('template/spielbetrieb.tpl.php');
 	}
 
-	private function getData($url, $file = null)
+	private function getData($url, $file = null, $hometeam = null)
 	{
 		if ($file === null)
-			return $this->loadUrlData($url);
+			return $this->loadUrlData($url, $hometeam);
+
+		$this->loadUrlData($url, $hometeam);
 
 		$dir = get_template_directory()."/json";
 		$filePath = "$dir/$file";
@@ -40,7 +43,7 @@ class Spielbetrieb
 		if (file_exists($filePath))
 			$filedate = new DateTime(date('Y-m-d H:i:s', filemtime($filePath)));
 		if (!file_exists($filePath) || $now->add(new DateInterval('PT5M')) > $filedate) {
-			$result = $this->loadUrlData($url);
+			$result = $this->loadUrlData($url, $hometeam);
 			if ($result !== null)
 				file_put_contents($filePath, $result);
 			else
@@ -51,7 +54,7 @@ class Spielbetrieb
 		return $result;
 	}
 
-	private function loadUrlData($url)
+	private function loadUrlData($url, $hometeam)
 	{
 		$content = @ file_get_contents($url);
 		$content = $this->getContentData($content);
@@ -85,18 +88,43 @@ class Spielbetrieb
 			'rangliste' => [],
 		];
 
-		$content = $this->processContentToData($values, $data);
+		$content = $this->processContentToData($values, $data, $hometeam);
 		if ($content['spiele'] === [] && $content['rangliste'] === [])
 			return null;
+
+		$content = $this->processEJuniorenRenaming($content);
 
 		return json_encode($content);
 	}
 
-	private function processContentToData($array, $data)
+	private function processEJuniorenRenaming($content)
+	{
+		foreach ($content['spieleliste'] as &$spiel) {
+				$posJun = strpos($spiel['Typ'], 'Junioren E');
+
+				if (!$posJun)
+					continue;
+				$team = $spiel[$spiel['HomeTeam']];
+				$posA = strpos($team, 'FC Hägendorf a');
+				$posB = strpos($team, 'FC Hägendorf b');
+				if ($posA !== false) {
+					$spiel['Typ'] = $spiel['Typ']." weiss";
+					$spiel[$spiel['HomeTeam']] = 'FC Hägendorf weiss';
+				}
+				if ($posB !== false) {
+					$spiel['Typ'] = $spiel['Typ']." blau";
+					$spiel[$spiel['HomeTeam']] = 'FC Hägendorf blau';
+				}
+		}
+		return $content;
+	}
+
+	private function processContentToData($array, $data, $hometeam)
 	{
 		$typ = '';
 		$typclass = '';
 		$spielnummer = '';
+		$location = '';
 		$nextPunkte = false;
 		foreach ($array as $key => $value) {
 
@@ -124,6 +152,8 @@ class Spielbetrieb
 					"TypClass" => $typclass,
 					"Spielnummer" => $spielnummer,
 					"Datumzeit" => $data['datumzeit'],
+					"Location" => $location,
+					"HomeTeam" => $hometeam,
 				];
 				$data['datum'] = '';
 			} else if ($data['typ'] === 'AS' && preg_match('/^([0-9:]){5}$/', trim(($value['value'] ?? '')))) {
@@ -138,6 +168,8 @@ class Spielbetrieb
 					"TypClass" => $typclass,
 					"Spielnummer" => $spielnummer,
 					"Datumzeit" => $data['datumzeit'],
+					"Location" => $location,
+					"HomeTeam" => $hometeam,
 				];
 			}
 
@@ -149,10 +181,14 @@ class Spielbetrieb
 			if ($data['nextTeam'] !== '' && $class === 'tabMyTeam') {
 				$team = ($data['nextTeam'] === 'teamA') ? 'TeamA' : 'TeamB';
 				$data['spiele'][$data['datumzeit']][$team] = $value['value'] ?? '';
+				if (strpos($data['spiele'][$data['datumzeit']][$team], $hometeam) !== false)
+					$data['spiele'][$data['datumzeit']]['HomeTeam'] = $team;
 				$data['nextTeam'] = '';
 			} else if ($data['nextTeam'] !== '' && $class === 'ranCteamSpan') {
 				$team = ($data['nextTeam'] === 'teamA') ? 'TeamA' : 'TeamB';
 				$data['spiele'][$data['datumzeit']][$team] = $value['value'] ?? '';
+				if (strpos($data['spiele'][$data['datumzeit']][$team], $hometeam) !== false)
+					$data['spiele'][$data['datumzeit']]['HomeTeam'] = $team;
 				$data['nextTeam'] = '';
 			}
 			if (($tor[0] ?? '') !== '') {
@@ -161,10 +197,16 @@ class Spielbetrieb
 			}
 			if ($class === 'sppStatusText')
 				$data['spiele'][$data['datumzeit']]['Status'] = $value['value'] ?? '';
-			if ($data['typ'] === 'TS' && $class === 'list-group-item sppTitel')
+			if ($data['typ'] === 'TS' && $class === 'list-group-item sppTitel') {
 				$typ = $value['value'];
-			else if ($data['typ'] === 'AS' && $class === 'col-xs-11 col-md-offset-1 font-small')
+			} else if ($data['typ'] === 'AS' && $class === 'col-xs-11 col-md-offset-1 font-small') {
 				$typ = $value['value'];
+				preg_match('/[0-9]{5,}/', $value['value'], $spielnummermatch);
+				$spielnummermatch = $spielnummermatch[0] ?? null;
+				$locationpos = strpos($value['value'], $spielnummermatch);
+				$location = substr($value['value'], $locationpos + strlen($spielnummermatch));
+				$data['spiele'][$data['datumzeit']]['Location'] = $location;
+			}
 			if (strpos($typ, 'Trainingsspiel')) {
 				$typ = "Trainingsspiel";
 				$typclass = "badge-secondary";
@@ -172,11 +214,13 @@ class Spielbetrieb
 				$pos = strpos($typ, 'Spielnummer', 0);
 				$pos = $pos === false ? strlen($typ) : $pos;
 				$typ = trim(substr($typ, 0, $pos));
+				$typ = $this->getTyp($typ);
 				$typclass = "badge-primary";
 			} elseif (strpos($typ, 'Cup')) {
 				$pos = strpos($typ, 'Spielnummer', 0);
 				$pos = $pos === false ? strlen($typ) : $pos;
 				$typ = trim(substr($typ, 0, $pos));
+				$typ = $this->getTyp($typ);
 				$typclass = "badge-success";
 			}
 			if ($data['typ'] === 'AS' && isset($data['spiele'][$data['datumzeit']])) {
@@ -187,6 +231,8 @@ class Spielbetrieb
 				$spielnummer = $value['value'] ?? '';
 			if (isset($value['value']) && strpos($value['value'], 'Spielnummer') !== false)
 				$spielnummer = $value['value'];
+			preg_match('/[0-9]{5,}/', $spielnummer, $spielnummermatch);
+			$spielnummer = $spielnummermatch[0] ?? null;
 			$spielnummer = trim(str_replace('Spielnummer', '', $spielnummer));
 			if (isset($data['spiele'][$data['datumzeit']]) && $spielnummer !== '')
 				$data['spiele'][$data['datumzeit']]['Spielnummer'] = $spielnummer;
@@ -235,6 +281,23 @@ class Spielbetrieb
 			}
 		}
 		return $data;
+	}
+
+	private function getTyp($typ)
+	{
+		$pos = strpos($typ, '- Stärkeklasse');
+		if ($pos !== false) $typ = substr($typ, 0, $pos);
+		$pos = strpos($typ, '1. Stärkeklasse');
+		if ($pos !== false) $typ = substr($typ, 0, $pos);
+		$pos = strpos($typ, '2. Stärkeklasse');
+		if ($pos !== false) $typ = substr($typ, 0, $pos);
+		$pos = strpos($typ, '3. Stärkeklasse');
+		if ($pos !== false) $typ = substr($typ, 0, $pos);
+		$pos = strpos($typ, '- Gruppe');
+		if ($pos !== false) $typ = substr($typ, 0, $pos);
+		$pos = strpos($typ, '- Herbstrunde');
+		if ($pos !== false) $typ = substr($typ, 0, $pos);
+		return $typ;
 	}
 
 	private function getContentData($content)
