@@ -126,6 +126,7 @@ class Spielbetrieb
 		$spielnummer = '';
 		$location = '';
 		$nextPunkte = false;
+		$hometeamText = $hometeam;
 		foreach ($array as $key => $value) {
 
 			if ($value['tag'] === 'H4')
@@ -181,13 +182,13 @@ class Spielbetrieb
 			if ($data['nextTeam'] !== '' && $class === 'tabMyTeam') {
 				$team = ($data['nextTeam'] === 'teamA') ? 'TeamA' : 'TeamB';
 				$data['spiele'][$data['datumzeit']][$team] = $value['value'] ?? '';
-				if (strpos($data['spiele'][$data['datumzeit']][$team], $hometeam) !== false)
+				if ($hometeam !== '' && strpos($data['spiele'][$data['datumzeit']][$team], $hometeam) !== false)
 					$data['spiele'][$data['datumzeit']]['HomeTeam'] = $team;
 				$data['nextTeam'] = '';
 			} else if ($data['nextTeam'] !== '' && $class === 'ranCteamSpan') {
 				$team = ($data['nextTeam'] === 'teamA') ? 'TeamA' : 'TeamB';
 				$data['spiele'][$data['datumzeit']][$team] = $value['value'] ?? '';
-				if (strpos($data['spiele'][$data['datumzeit']][$team], $hometeam) !== false)
+				if ($hometeam !== '' && strpos($data['spiele'][$data['datumzeit']][$team], $hometeam) !== false)
 					$data['spiele'][$data['datumzeit']]['HomeTeam'] = $team;
 				$data['nextTeam'] = '';
 			}
@@ -256,6 +257,7 @@ class Spielbetrieb
 					'tore' => 0,
 					'gegentore' => 0,
 					'punkte' => 'x',
+					'hometeam' => $hometeamText,
 				];
 			}
 			if ($data['team'] !== '' && ($value['attributes']['CLASS'] ?? '') === 'ranCsp')
@@ -294,6 +296,8 @@ class Spielbetrieb
 		$pos = strpos($typ, '3. Stärkeklasse');
 		if ($pos !== false) $typ = substr($typ, 0, $pos);
 		$pos = strpos($typ, '- Gruppe');
+		if ($pos !== false) $typ = substr($typ, 0, $pos);
+		$pos = strpos($typ, '/ Gruppe');
 		if ($pos !== false) $typ = substr($typ, 0, $pos);
 		$pos = strpos($typ, '- Herbstrunde');
 		if ($pos !== false) $typ = substr($typ, 0, $pos);

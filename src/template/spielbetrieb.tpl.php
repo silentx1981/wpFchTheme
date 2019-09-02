@@ -20,7 +20,7 @@ if ($spiele['typ'] === '') {
         <?php
             foreach ($spiele['rangliste'] as $row) {
 	            ?>
-                <tr>
+                <tr class="<?php if($row['team'] === $row['hometeam']) echo 'font-weight-bold' ?>">
                     <td role="cell" data-title="Rang"><?php echo $row['rang']; ?>&nbsp;</td>
                     <td role="cell" data-title="Mannschaft"><?php echo $row['team']; ?></td>
                     <td class="text-center" role="cell" data-title="Spiele"><?php echo $row['spiele']; ?></td>
@@ -76,9 +76,15 @@ if ($spiele['typ'] === '') {
             </div>
             <div class="col-12">
 				<?php echo date('H:i', strtotime($spiel['Datumzeit'])); ?>
-                <span data-toggle="tooltip" data-placement="top" title="<?php echo $spiel['Location']; ?>">
-                    <i class="fas fa-map-marker-alt"></i>
-                </span>
+                <?php
+                if ($spiel['Location'] !== '') {
+                    ?>
+                    <span data-toggle="tooltip" data-placement="top" title="<?php echo $spiel['Location']; ?>">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </span>
+                <?php
+                }
+                ?>
             </div>
             <div class="col-10">
                 <div class="row">
