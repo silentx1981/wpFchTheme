@@ -302,3 +302,5 @@ function showPerson($attrs = [])
 	return ob_get_clean();
 }
 add_shortcode('showPerson', 'showPerson');
+
+add_theme_support( 'post-thumbnails' );
