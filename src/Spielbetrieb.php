@@ -46,7 +46,7 @@ class Spielbetrieb
         ];
         foreach ($spiele as $spielkey => $spiel) {
             $gridSpiele['Spieltage'][$spielkey] = $spiel;
-            if ($spiel['Active'])
+            if ($spiel['Active'] ?? null)
                 $gridSpiele['Active'] = 'active';
             if (count($gridSpiele['Spieltage']) === (int) $grid) {
                 $result[] = $gridSpiele;
