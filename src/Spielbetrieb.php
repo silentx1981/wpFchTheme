@@ -19,6 +19,8 @@ class Spielbetrieb
 	{
 		$url = $attr['url'] ?? null;
 		$file = $attr['file'] ?? null;
+		$type = $attr['type'] ?? null;
+		$grid = $attr['grid'] ?? 2;
 		$hometeam = $attr['hometeam'] ?? null;
 		if ($url === null)
 			return '';
@@ -26,8 +28,57 @@ class Spielbetrieb
 		$locale = json_decode(file_get_contents(get_template_directory().'/src/locale/de.json'), true);
 		$data = $this->getData($url, $file, $hometeam);
 		$spiele = json_decode($data, true);
-		include('template/spielbetrieb.tpl.php');
+        $slideSpiele = $this->renderSpieleForSlider(array_values($spiele['spieleliste']));
+        $slideSpiele = $this->renderSpieleForSliderGrid($slideSpiele, $grid);
+
+		if ($type === 'slider')
+            include('template/spielbetrieb.slider1.php');
+		else
+		    include('template/spielbetrieb.tpl.php');
 	}
+
+	private function renderSpieleForSliderGrid($spiele, $grid = 2)
+    {
+        $result = [];
+        $gridSpiele = [
+            'Active' => false,
+            'Spieltage' => [],
+        ];
+        foreach ($spiele as $spielkey => $spiel) {
+            $gridSpiele['Spieltage'][$spielkey] = $spiel;
+            if ($spiel['Active'])
+                $gridSpiele['Active'] = 'active';
+            if (count($gridSpiele['Spieltage']) === (int) $grid) {
+                $result[] = $gridSpiele;
+                $gridSpiele = [
+                    'Active' => false,
+                    'Spieltage' => [],
+                ];
+            }
+        }
+        if ($gridSpiele !== [])
+            $result[] = $gridSpiele;
+
+        return $result;
+    }
+
+	private function renderSpieleForSlider($spielliste, $index = 0, $result = [])
+    {
+        $today = date('Y-m-d');
+        $spiel = $spielliste[$index] ?? null;
+        if ($spiel === null)
+            return $result;
+
+        $datum = date('Y-m-d', strtotime($spiel['Datumzeit']));
+        if (!isset($result[$datum]))
+            $result[$datum]['spiele'] = [];
+
+        $result[$datum]['spiele'][] = $spiel;
+        if ($spiel['Active'])
+            $result[$datum]['Active'] = true;
+
+        return $this->renderSpieleForSlider($spielliste, $index + 1, $result);
+    }
 
 	private function getData($url, $file = null, $hometeam = null)
 	{
@@ -127,6 +178,8 @@ class Spielbetrieb
 		$location = '';
 		$nextPunkte = false;
 		$hometeamText = $hometeam;
+		$today = date('Y-m-d');
+		$active = null;
 		foreach ($array as $key => $value) {
 
 			if ($value['tag'] === 'H4')
@@ -142,6 +195,9 @@ class Spielbetrieb
 				$data['datum'] = $datum;
 				$data['datumzeit'] = $datum." 00:00";
 			} else if ($data['datum'] !== '' && $data['typ'] === 'TS') {
+			    $date = date('Y-m-d', strtotime($data['datum']));
+			    if ($date >= $today && $active === null)
+			        $active = true;
 				$data['datumzeit'] = $data['datum']." ".trim(($value['value'] ?? ''));
 				$data['spiele'][$data['datumzeit']] = [
 					"TeamA" => '',
@@ -155,9 +211,13 @@ class Spielbetrieb
 					"Datumzeit" => $data['datumzeit'],
 					"Location" => $location,
 					"HomeTeam" => $hometeam,
+                    "Active"   => $active,
 				];
 				$data['datum'] = '';
 			} else if ($data['typ'] === 'AS' && preg_match('/^([0-9:]){5}$/', trim(($value['value'] ?? '')))) {
+                $date = date('Y-m-d', strtotime($data['datum']));
+                if ($date >= $today && $active === null)
+                    $active = true;
 				$data['datumzeit'] = $data['datum']." ".trim($value['value']);
 				$data['spiele'][$data['datumzeit']] = [
 					"TeamA" => '',
@@ -171,8 +231,11 @@ class Spielbetrieb
 					"Datumzeit" => $data['datumzeit'],
 					"Location" => $location,
 					"HomeTeam" => $hometeam,
+                    "Active"   => $active,
 				];
 			}
+            if ($active)
+                $active = false;
 
 			$class = $value['attributes']['CLASS'] ?? '';
 			preg_match('/(team[AB])/', $class, $team);
