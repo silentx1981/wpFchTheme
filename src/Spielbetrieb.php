@@ -29,15 +29,17 @@ class Spielbetrieb
 		$data = $this->getData($url, $file, $hometeam);
 		$spiele = json_decode($data, true);
         $slideSpiele = $this->renderSpieleForSlider(array_values($spiele['spieleliste']));
-        $slideSpiele = $this->renderSpieleForSliderGrid($slideSpiele, $grid);
+        $slideSpiele = $this->renderSpieleForSliderGrid($slideSpiele, $grid, $type);
 
 		if ($type === 'slider')
             include('template/spielbetrieb.slider1.php');
+		elseif ($type === 'grid')
+            include('template/spielbetrieb.grid1.php');
 		else
 		    include('template/spielbetrieb.tpl.php');
 	}
 
-	private function renderSpieleForSliderGrid($spiele, $grid = 2)
+	private function renderSpieleForSliderGrid($spiele, $grid = 2, $type = null)
     {
         $result = [];
         $gridSpiele = [
@@ -48,7 +50,7 @@ class Spielbetrieb
             $gridSpiele['Spieltage'][$spielkey] = $spiel;
             if ($spiel['Active'] ?? null)
                 $gridSpiele['Active'] = 'active';
-            if (count($gridSpiele['Spieltage']) === (int) $grid) {
+            if (count($gridSpiele['Spieltage']) === (int) $grid && $type === 'slider') {
                 $result[] = $gridSpiele;
                 $gridSpiele = [
                     'Active' => false,
