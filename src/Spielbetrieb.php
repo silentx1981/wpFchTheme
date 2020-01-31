@@ -76,7 +76,7 @@ class Spielbetrieb
             $result[$datum]['spiele'] = [];
 
         $result[$datum]['spiele'][] = $spiel;
-        if ($spiel['Active'])
+        if ($spiel['Active'] ?? null)
             $result[$datum]['Active'] = true;
 
         return $this->renderSpieleForSlider($spielliste, $index + 1, $result);
