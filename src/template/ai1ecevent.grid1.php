@@ -20,7 +20,15 @@
                                     <div class="col-12">
                                         <div class="d-flex mb-2">
                                             <div class="align-self-start text-center" style="width: 50px;"><i class="far fa-2x fa-clock"></i>&nbsp;&nbsp;</div>
-                                            <div class="align-self-center"><h5><?php echo date("H:i", strtotime($event['Von']))." - ".date("H:i", strtotime($event['Bis'])); ?></h5></div>
+                                            <div class="align-self-center">
+                                                <h5>
+                                                    <?php
+                                                        echo date("H:i", strtotime($event['Von']));
+                                                        if ((int) $event['instant_event'] !== 1)
+                                                            echo " - ".date("H:i", strtotime($event['Bis']));
+                                                    ?>
+                                                </h5>
+                                            </div>
                                         </div>
                                     </div>
                                     <?php

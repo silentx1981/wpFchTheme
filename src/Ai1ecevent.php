@@ -16,12 +16,14 @@ class Ai1ecevent
     private function getEvents()
     {
         global $wpdb;
+        $timezone = wp_timezone_string();
 
-        $sql = 'SELECT 	e.start, 
+        $sql = "SELECT 	e.start, 
 		                e.end,
 		                e.timezone_name,
-		                FROM_UNIXTIME(e.start) as Von,
-		                FROM_UNIXTIME(e.end) as Bis, 
+		                CONVERT_TZ(FROM_UNIXTIME(e.start), '".$timezone."', e.timezone_name) as Von,
+		                CONVERT_TZ(FROM_UNIXTIME(e.end), '".$timezone."', e.timezone_name) as Bis, 
+		                e.instant_event,
                         p.post_title,
                         p.post_content,
                         p.post_status,
@@ -31,9 +33,9 @@ class Ai1ecevent
                 FROM wp_ai1ec_events as e
                 INNER JOIN wp_posts  as p
                     ON e.post_id = p.ID 
-                WHERE p.post_status = "publish"
-                HAVING DATE_FORMAT(FROM_UNIXTIME(e.start), "%Y-%m-%d") > DATE_FORMAT(NOW(), "%Y-%m-%d")
-                ORDER BY FROM_UNIXTIME(e.start)';
+                WHERE p.post_status = 'publish'
+                HAVING DATE_FORMAT(FROM_UNIXTIME(e.start), '%Y-%m-%d') > DATE_FORMAT(NOW(), '%Y-%m-%d')
+                ORDER BY FROM_UNIXTIME(e.start)";
         $result = $wpdb->get_results($sql);
 
         return json_decode(json_encode($result), true);
