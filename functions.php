@@ -303,4 +303,16 @@ function showPerson($attrs = [])
 }
 add_shortcode('showPerson', 'showPerson');
 
+function showAi1ecEvent($attrs = [])
+{
+    require_once __DIR__."/vendor/autoload.php";
+    require_once __DIR__."/src/Ai1ecevent.php";
+
+    ob_start();
+    $event = new \wpFchTheme\Ai1ecevent();
+    $event->show($attrs);
+    return ob_get_clean();
+}
+add_shortcode('showAiecEvent', 'showAi1ecEvent');
+
 add_theme_support( 'post-thumbnails' );
