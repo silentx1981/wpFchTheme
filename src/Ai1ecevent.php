@@ -32,7 +32,8 @@ class Ai1ecevent
                 INNER JOIN wp_posts  as p
                     ON e.post_id = p.ID 
                 WHERE p.post_status = "publish"
-                HAVING DATE_FORMAT(FROM_UNIXTIME(e.start), "%Y-%m-%d") > DATE_FORMAT(NOW(), "%Y-%m-%d")';
+                HAVING DATE_FORMAT(FROM_UNIXTIME(e.start), "%Y-%m-%d") > DATE_FORMAT(NOW(), "%Y-%m-%d")
+                ORDER BY FROM_UNIXTIME(e.start)';
         $result = $wpdb->get_results($sql);
 
         return json_decode(json_encode($result), true);
