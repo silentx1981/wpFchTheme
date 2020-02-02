@@ -12,13 +12,13 @@
     }
 </style>
 
-<div class="container text-center my-3">
+<div class="container text-center">
     <div class="row mx-auto my-auto">
         <div id="spielBetriebCarousel" class="carousel slide w-100" data-ride="carousel" data-interval="false">
             <div class="carousel-inner" role="listbox"><?php
                 foreach ($slideSpiele as $spieleday) {
                     ?>
-                    <div class="carousel-item py-5 <?php echo $spieleday['Active']; ?>">
+                    <div class="carousel-item <?php echo $spieleday['Active']; ?>">
                         <div class="row"><?php
                         foreach ($spieleday['Spieltage'] as $spieldatum => $spiele) {
                             ?>
