@@ -366,6 +366,8 @@ class Spielbetrieb
 		if ($pos !== false) $typ = substr($typ, 0, $pos);
 		$pos = strpos($typ, '- Herbstrunde');
 		if ($pos !== false) $typ = substr($typ, 0, $pos);
+        $pos = strpos($typ, ' (Spielzeit ');
+        if ($pos !== false) $typ = substr($typ, 0, $pos);
 		return $typ;
 	}
 
