@@ -36,7 +36,7 @@
                                             <div class="container-fluid">
                                                 <div class="row">
                                                     <div class="col-12">
-                                                        <span class="badge <?php echo $spiel['TypClass']; ?>">
+                                                        <span class="badge <?php echo $spiel['TypClass']; ?> w-100" style="overflow: hidden">
                                                             <?php echo $spiel['Typ'] ?>
                                                         </span>
                                                     </div>
