@@ -1,4 +1,4 @@
-<div class="conteiner my-3">
+<div class="container">
     <div class="row mx-auto my-auto">
         <div id="eventCarousel" class="carousel slide w-100" data-ride="carousel" data-interval="false">
             <div class="carousel-inner" role="listbox">
@@ -6,7 +6,7 @@
                 $active = 'active';
                 foreach($sliderEvents as $events) {
                     ?>
-                    <div class="carousel-item py-5 <?php echo $active; ?>">
+                    <div class="carousel-item <?php echo $active; ?>">
                         <div class="row">
                             <?php
                             foreach ($events as $event) {
