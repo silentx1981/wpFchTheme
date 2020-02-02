@@ -315,4 +315,9 @@ function showAi1ecEvent($attrs = [])
 }
 add_shortcode('showAiecEvent', 'showAi1ecEvent');
 
-add_theme_support( 'post-thumbnails' );
+function custom_theme_setup() {
+    add_theme_support( 'post-thumbnails' );
+    add_theme_support('html5', ['comment-list']);
+}
+add_action('after_setup_theme', 'custom_theme_setup');
+

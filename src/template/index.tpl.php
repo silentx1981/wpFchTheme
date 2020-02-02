@@ -7,6 +7,7 @@
 					<div class="col-md">
 						<h1><?php the_title(); ?></h1>
 						<?php the_content(); ?>
+                        <?php comments_template('', true); ?>
 					</div>
 				<?php endwhile; ?>
 				<?php endif; ?>
