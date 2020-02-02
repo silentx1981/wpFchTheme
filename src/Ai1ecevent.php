@@ -16,13 +16,12 @@ class Ai1ecevent
     private function getEvents()
     {
         global $wpdb;
-        $timezone = wp_timezone_string();
 
         $sql = "SELECT 	e.start, 
 		                e.end,
 		                e.timezone_name,
-		                CONVERT_TZ(FROM_UNIXTIME(e.start), '".$timezone."', e.timezone_name) as Von,
-		                CONVERT_TZ(FROM_UNIXTIME(e.end), '".$timezone."', e.timezone_name) as Bis, 
+		                CONVERT_TZ(FROM_UNIXTIME(e.start), '+00:00', e.timezone_name) as Von,
+		                CONVERT_TZ(FROM_UNIXTIME(e.end), '+00:00', e.timezone_name) as Bis, 
 		                e.instant_event,
                         p.post_title,
                         p.post_content,
