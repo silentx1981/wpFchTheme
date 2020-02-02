@@ -7,10 +7,33 @@ class Ai1ecevent
     public function show($attrs = [])
     {
         $grid = $attrs['grid'] ?? 3;
+        $type = $attrs['type'] ?? null;
         $events = $this->getEvents();
         $locale = json_decode(file_get_contents(get_template_directory().'/src/locale/de.json'), true);
+        $sliderEvents = $this->renderEventsForSliderGrid($events, $grid);
 
-        include('template/ai1ecevent.grid1.php');
+        if ($type === 'slider')
+            include('template/ai1ecevent.slider1.php');
+        else
+            include('template/ai1ecevent.grid1.php');
+    }
+
+    private function renderEventsForSliderGrid($events, $grid = 2)
+    {
+        $result = [];
+        $gridEvents = [];
+
+        foreach ($events as $event) {
+            $gridEvents[] = $event;
+            if (count($gridEvents) === (int) $grid) {
+                $result[] = $gridEvents;
+                $gridEvents = [];
+            }
+        }
+        if ($gridEvents !== [])
+            $result[] = $gridEvents;
+
+        return $result;
     }
 
     private function getEvents()
