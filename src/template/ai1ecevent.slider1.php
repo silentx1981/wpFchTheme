@@ -11,7 +11,7 @@
                             <?php
                             foreach ($events as $event) {
                                 ?>
-                                <div class="col-sm-<?php echo floor(12 / $grid); ?>">
+                                <div class="col-sm-<?php echo floor(12 / $grid); ?>" style="margin-bottom: 20px;">
                                     <div class="card h-100">
                                         <div class="card-header text-center">
                                             <strong><?php echo $event['post_title']; ?></strong>
