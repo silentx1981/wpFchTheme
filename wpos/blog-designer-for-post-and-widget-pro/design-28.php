@@ -72,7 +72,7 @@ $downloadLink = get_post_custom_values('DownloadLink') ?? [];
 							<div class="wpspw-post-short-content">
                                 <?php
                                         echo wpspw_pro_get_post_excerpt( $post->ID, get_the_content(), $content_words_limit, $content_tail );
-                                        if (isset($downloadLink[0])
+                                        if (isset($downloadLink[0]))
                                             echo '<a class="btn btn-primary" href="'.$downloadLink[0].'" target="_blank"><i class="fa fa-download" aria-hidden="true"></i>&nbsp;&nbsp;Download</a>';
                                 ?>
                             </div>
