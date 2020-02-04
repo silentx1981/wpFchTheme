@@ -41,7 +41,7 @@ $downloadLink = get_post_custom_values('DownloadLink') ?? [];
 		if($show_category_name && $cate_name !='') { ?>
 			<div class="wpspw-post-categories"><?php echo $cate_name; ?></div>
 		<?php } 
-		if($post_title && $downloadLink === []) { ?>
+		if($post_title) { ?>
 			<h2 class="wpspw-post-title">
 				<a href="<?php echo esc_url($post_link); ?>" target="<?php echo $link_target; ?>"><?php echo $post_title; ?></a> 
 			</h2>
