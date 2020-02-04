@@ -9,10 +9,10 @@ function wps_scripts()
 {
 	/* JQuery */
 	wp_enqueue_script(
-		'jqueryslim',
-		get_template_directory_uri() . '/js/jquery-3.2.1.slim.min.js',
+		'jquery',
+		get_template_directory_uri() . '/js/jquery-3.4.1.min.js',
 		array(),
-		'3.2.1',
+		'3.4.1',
 		true
 	);
 
