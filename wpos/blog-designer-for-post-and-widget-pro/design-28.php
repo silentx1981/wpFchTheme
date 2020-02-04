@@ -15,7 +15,7 @@ if ( !defined( 'ABSPATH' ) ) {
 }
 
 global $post;
-$downloadLink = get_post_custom_values('DownloadLink') ?? null;
+$downloadLink = get_post_custom_values('DownloadLink') ?? [];
 
 ?>
 
@@ -24,7 +24,7 @@ $downloadLink = get_post_custom_values('DownloadLink') ?? null;
 		<?php if ( $post_featured_image ) { ?>
 			<div class="wpspw-post-image-bg" style="<?php echo $height_css; ?>">
                 <?php
-                if (!$downloadLink) {
+                if ($downloadLink === []) {
                     ?>
                     <a href="<?php echo esc_url($post_link); ?>" target="<?php echo $link_target; ?>">
                         <img src="<?php echo esc_url($post_featured_image); ?>" alt="<?php the_title_attribute(); ?>" />
@@ -41,7 +41,7 @@ $downloadLink = get_post_custom_values('DownloadLink') ?? null;
 		if($show_category_name && $cate_name !='') { ?>
 			<div class="wpspw-post-categories"><?php echo $cate_name; ?></div>
 		<?php } 
-		if($post_title) { ?>
+		if($post_title && $downloadLink === []) { ?>
 			<h2 class="wpspw-post-title">
 				<a href="<?php echo esc_url($post_link); ?>" target="<?php echo $link_target; ?>"><?php echo $post_title; ?></a> 
 			</h2>
@@ -68,12 +68,11 @@ $downloadLink = get_post_custom_values('DownloadLink') ?? null;
 			<div class="wpspw-post-content">
 				<?php if( empty($show_full_content) ) {
 					if(!empty(get_the_content()) ) { ?>
-                        <?php print_r(get_post_custom_values('Link')) ?>
 						<div class="wpspw-post-line-1"></div>
 							<div class="wpspw-post-short-content">
                                 <?php
                                         echo wpspw_pro_get_post_excerpt( $post->ID, get_the_content(), $content_words_limit, $content_tail );
-                                        if ($downloadLink !== [])
+                                        if (isset($downloadLink[0])
                                             echo '<a class="btn btn-primary" href="'.$downloadLink[0].'" target="_blank"><i class="fa fa-download" aria-hidden="true"></i>&nbsp;&nbsp;Download</a>';
                                 ?>
                             </div>
