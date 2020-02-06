@@ -16702,7 +16702,7 @@ body {
   margin-left: -1px;
   border-width: 0 1px 1px 1px;
   border-style: solid;
-  border-color: #446688;
+  border-color: rgba(188, 188, 188, 0.5);
   border-top-left-radius: 0px;
   border-top-right-radius: 0px;
   z-index: 1030;
@@ -16721,6 +16721,17 @@ body {
 }
 .navbar .dropdown-item:hover {
   background-color: linear-gradient(rgba(255, 255, 255, 0.8), rgba(230, 230, 230, 0.8));
+}
+@media (max-width: 768px) {
+  .navbar .menu-item {
+    border-right: 0px solid #446688;
+  }
+  .navbar .menu-item a, .navbar .menu-item a:hover a:link {
+    font-size: 30px;
+  }
+  .navbar .dropdown-menu {
+    padding-left: 20px;
+  }
 }
 
 @media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
