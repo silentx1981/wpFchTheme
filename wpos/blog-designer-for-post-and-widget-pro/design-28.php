@@ -43,7 +43,10 @@ $downloadLink = get_post_custom_values('DownloadLink') ?? [];
 		<?php } 
 		if($post_title) { ?>
 			<h2 class="wpspw-post-title">
-				<a href="<?php echo esc_url($post_link); ?>" target="<?php echo $link_target; ?>"><?php echo $post_title; ?></a> 
+                if ($downloadLink === [])
+				    <a href="<?php echo esc_url($post_link); ?>" target="<?php echo $link_target; ?>"><?php echo $post_title; ?></a>
+                else
+                    <?php echo $post_title; ?>
 			</h2>
 		<?php } 
 		if($show_date || $show_author || $show_comments) { ?>
