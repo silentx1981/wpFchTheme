@@ -51,7 +51,7 @@
                                             <?php
                                         }
                                         ?>
-                                        <div class="col-10" style="margin-top: 10px;">
+                                        <div class="col-9" style="margin-top: 10px;">
                                             <div class="row">
                                                 <div class="col-12 <?php if ($spiel['HomeTeam'] === 'TeamA') echo 'font-weight-bold'; ?>">
                                                     <?php echo $spiel['TeamA']; ?>
@@ -61,7 +61,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-2" style="margin-top: 10px;">
+                                        <div class="col-3" style="margin-top: 10px;">
                                             <div class="row">
                                                 <div class="col-12 <?php if ($spiel['HomeTeam'] === 'TeamA') echo 'font-weight-bold'; ?>">
                                                     <span class="text-right"><?php echo($spiel['TorA'] ?? ''); ?></span>
