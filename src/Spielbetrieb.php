@@ -58,7 +58,7 @@ class Spielbetrieb
                 ];
             }
         }
-        if ($gridSpiele !== [])
+        if (($gridSpiele['Spieltage'] ?? []) !== [])
             $result[] = $gridSpiele;
 
         return $result;
@@ -182,6 +182,7 @@ class Spielbetrieb
 		$hometeamText = $hometeam;
 		$today = date('Y-m-d');
 		$active = null;
+		$link = null;
 		foreach ($array as $key => $value) {
 
 			if ($value['tag'] === 'H4')
@@ -214,6 +215,7 @@ class Spielbetrieb
 					"Location" => $location,
 					"HomeTeam" => $hometeam,
                     "Active"   => $active,
+                    "Link"     => null,
 				];
 				$data['datum'] = '';
 			} else if ($data['typ'] === 'AS' && preg_match('/^([0-9:]){5}$/', trim(($value['value'] ?? '')))) {
@@ -234,12 +236,19 @@ class Spielbetrieb
 					"Location" => $location,
 					"HomeTeam" => $hometeam,
                     "Active"   => $active,
+                    "Link"     => null,
 				];
 			}
             if ($active)
                 $active = false;
 
 			$class = $value['attributes']['CLASS'] ?? '';
+            $href = $value['attributes']['HREF'] ?? null;
+            $title = $value['attributes']['TITLE'] ?? null;
+            if ($href !== null && trim($title) === 'Telegramm') {
+                $data['spiele'][$data['datumzeit']]['Link'] = $href;
+            }
+
 			preg_match('/(team[AB])/', $class, $team);
 			preg_match('/(tor[AB])/', $class, $tor);
 			if (($team[0] ?? '') !== '')
@@ -269,8 +278,11 @@ class Spielbetrieb
 				$typ = $value['value'];
 				preg_match('/[0-9]{5,}/', $value['value'], $spielnummermatch);
 				$spielnummermatch = $spielnummermatch[0] ?? null;
-				$locationpos = strpos($value['value'], $spielnummermatch);
-				$location = substr($value['value'], $locationpos + strlen($spielnummermatch));
+				$location = '';
+				if (!empty($spielnummermatch)) {
+                    $locationpos = strpos($value['value'], strval($spielnummermatch));
+                    $location = substr($value['value'], $locationpos + strlen($spielnummermatch));
+                }
 				$data['spiele'][$data['datumzeit']]['Location'] = $location;
 			}
 			if (strpos($typ, 'Trainingsspiel')) {

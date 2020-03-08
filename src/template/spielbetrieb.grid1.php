@@ -37,6 +37,13 @@
                                             <div class="d-flex mb-2">
                                                 <div class="align-self-start text-center" style="width: 50px;"> <i class="far fa-2x fa-clock"></i>&nbsp;</div>
                                                 <div class="align-self-center"><?php echo date('H:i', strtotime($spiel['Datumzeit'])); ?></div>
+                                                <div class="align-self-start ml-auto p-2">
+                                                    <?php if(!empty($spiel['Link'])) {
+                                                        ?>
+                                                             <a href="<?php echo 'https://www.sofv.ch/'.$spiel['Link']; ?>" target="_blank"><i class="far fa-file-alt"></i></a>
+                                                        <?php
+                                                    } ?>
+                                                </div>
                                             </div>
                                         </div>
                                         <?php

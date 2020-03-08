@@ -10,6 +10,9 @@ function open_tel(tel)
 	window.location.href="tel:"+tel;
 }
 
-$(function () {
-	$('[data-toggle="tooltip"]').tooltip()
+jQuery(document).ready(function($) {
+	$(function () {
+		$('[data-toggle="tooltip"]').tooltip()
+	});
 });
+
