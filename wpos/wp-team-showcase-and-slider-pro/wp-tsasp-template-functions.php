@@ -85,7 +85,7 @@ function wp_tsasp_member_social_meta( $post_id = '', $limit = 6 ) {
 			}
 
 			$social_inr_html .= '
-							<li><a '.$social_link_target.' href="'.$social_link.'" style="width: 50px; height: 50px; padding-top: 7px;"><i class="'.$fa_icon.'"></i></a></li>';
+							<li><a '.$social_link_target.' href="'.$social_link.'"><i class="'.$fa_icon.'"></i></a></li>';
 
 			// Limit no of social links
 			if( $limit != 'all' && $limit == $count ) {

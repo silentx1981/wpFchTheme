@@ -74,6 +74,12 @@ function wp_tsasp_get_unique() {
 	static $unique = 0;
 	$unique++;
 
+	// For Elementor & Beaver Builder
+	if( ( defined('ELEMENTOR_PLUGIN_BASE') && isset( $_POST['action'] ) && $_POST['action'] == 'elementor_ajax' )
+	|| ( class_exists('FLBuilderModel') && ! empty( $_POST['fl_builder_data']['action'] ) ) ) {
+		$unique = current_time('timestamp') . '-' . rand();
+	}
+
 	return $unique;
 }
 
@@ -92,7 +98,7 @@ function wp_tsasp_esc_attr($data) {
 /**
  * Sanitize Multiple HTML class
  * 
- * @package WP Slick Slider and Image Carousel Pro
+ * @package WP Team Showcase and Slider Pro
  * @since 1.2.6
  */
 function wp_tsasp_sanitize_html_classes($classes, $sep = " ") {
@@ -257,97 +263,97 @@ function wp_tsasp_grid_column( $grid = '' ) {
 function wp_tsasp_social_scrvices() {
 
 	$services_arr = array(
-							'fb_link' 		=> array(
-														'name'	=> __('Facebook', 'wp-team-showcase-and-slider'),
-														'desc'	=> __('Enter facebook link.', 'wp-team-showcase-and-slider'),
-														'icon'	=> 'fa fa-facebook'
-													),
-							'gp_link' 		=> array(
-														'name'	=> __('Google+', 'wp-team-showcase-and-slider'),
-														'desc'	=> __('Enter google plus link.', 'wp-team-showcase-and-slider'),
-														'icon'	=> 'fa fa-google-plus'
-													),
-							'li_link' 		=> array(
-														'name' 	=> __('Linkedin', 'wp-team-showcase-and-slider'),
-														'desc'	=> __('Enter Linkedin link.', 'wp-team-showcase-and-slider'),
-														'icon'	=> 'fa fa-linkedin'
-													),
-							'tw_link' 		=> array(
-														'name' => __('Twitter', 'wp-team-showcase-and-slider'),
-														'desc'	=> __('Enter Twitter link.', 'wp-team-showcase-and-slider'),
-														'icon'	=> 'fa fa-twitter'
-													),
-							'inst_link' 	=> array(
-														'name' => __('Instagram', 'wp-team-showcase-and-slider'),
-														'desc'	=> __('Enter Instagram link.', 'wp-team-showcase-and-slider'),
-														'icon'	=> 'fa fa-instagram'
-													),
-							'yt_link' 		=> array(
-														'name' 	=> __('YouTube', 'wp-team-showcase-and-slider'),
-														'desc'	=> __('Enter YouTube link.', 'wp-team-showcase-and-slider'),
-														'icon'	=> 'fa fa-youtube'
-													),
-							'pt_link' 		=> array(
-													'name' 	=> __('Pinterest', 'wp-team-showcase-and-slider'),
-													'desc'	=> __('Enter Pinterest link.', 'wp-team-showcase-and-slider'),
-													'icon'	=> 'fa fa-pinterest-p'
-												),
-							'tb_link' 		=> array(
-													'name' 	=> __('Tumblr', 'wp-team-showcase-and-slider'),
-													'desc'	=> __('Enter Tumblr link.', 'wp-team-showcase-and-slider'),
-													'icon'	=> 'fa fa-tumblr'
-												),
-							'fl_link' 		=> array(
-													'name' 	=> __('Flickr', 'wp-team-showcase-and-slider'),
-													'desc'	=> __('Enter Flickr link.', 'wp-team-showcase-and-slider'),
-													'icon'	=> 'fa fa-flickr'
-												),
-							'reddit_link'	=> array(
-													'name' 	=> __('Reddit', 'wp-team-showcase-and-slider'),
-													'desc'	=> __('Enter Reddit link.', 'wp-team-showcase-and-slider'),
-													'icon'	=> 'fa fa-reddit-alien'
-												),
-							'dl_link'	=> array(
-													'name' 	=> __('Delicious', 'wp-team-showcase-and-slider'),
-													'desc'	=> __('Enter Delicious link.', 'wp-team-showcase-and-slider'),
-													'icon'	=> 'fa fa-delicious'
-												),
-							'fs_link'	=> array(
-													'name' 	=> __('Foursquare', 'wp-team-showcase-and-slider'),
-													'desc'	=> __('Enter Foursquare link.', 'wp-team-showcase-and-slider'),
-													'icon'	=> 'fa fa-foursquare'
-												),
-							'vine_link'	=> array(
-													'name' 	=> __('Vine', 'wp-team-showcase-and-slider'),
-													'desc'	=> __('Enter Vine link.', 'wp-team-showcase-and-slider'),
-													'icon'	=> 'fa fa-vine'
-												),
-							'wp_link'	=> array(
-													'name' 	=> __('WordPress', 'wp-team-showcase-and-slider'),
-													'desc'	=> __('Enter WordPress profile link.', 'wp-team-showcase-and-slider'),
-													'icon'	=> 'fa fa-wordpress'
-												),
-							'mail'		=> array(
-													'name' 	=> __('Email', 'wp-team-showcase-and-slider'),
-													'desc'	=> __('Enter email address.', 'wp-team-showcase-and-slider'),
-													'icon'	=> 'fas fa-2x fa-envelope'
-												),
-							'web_link'	=> array(
-													'name' 	=> __('Website', 'wp-team-showcase-and-slider'),
-													'desc'	=> __('Enter website link.', 'wp-team-showcase-and-slider'),
-													'icon'	=> 'fa fa-desktop'
-												),
-							'phone'		=> array(
-													'name' 	=> __('Phone', 'wp-team-showcase-and-slider'),
-													'desc'	=> __('Enter phone number.', 'wp-team-showcase-and-slider'),
-													'icon'	=> 'fas fa-2x fa-phone'
-												),
-							'skype'		=> array(
-													'name' 	=> __('Skype', 'wp-team-showcase-and-slider'),
-													'desc'	=> __('Enter Skype id.', 'wp-team-showcase-and-slider'),
-													'icon'	=> 'fa fa-skype'
-												),
-						);
+		'fb_link' 		=> array(
+									'name'	=> __('Facebook', 'wp-team-showcase-and-slider'),
+									'desc'	=> __('Enter facebook link.', 'wp-team-showcase-and-slider'),
+									'icon'	=> 'fa fa-facebook'
+								),
+		'gp_link' 		=> array(
+									'name'	=> __('Google+', 'wp-team-showcase-and-slider'),
+									'desc'	=> __('Enter google plus link.', 'wp-team-showcase-and-slider'),
+									'icon'	=> 'fa fa-google-plus'
+								),
+		'li_link' 		=> array(
+									'name' 	=> __('Linkedin', 'wp-team-showcase-and-slider'),
+									'desc'	=> __('Enter Linkedin link.', 'wp-team-showcase-and-slider'),
+									'icon'	=> 'fa fa-linkedin'
+								),
+		'tw_link' 		=> array(
+									'name' => __('Twitter', 'wp-team-showcase-and-slider'),
+									'desc'	=> __('Enter Twitter link.', 'wp-team-showcase-and-slider'),
+									'icon'	=> 'fa fa-twitter'
+								),
+		'inst_link' 	=> array(
+									'name' => __('Instagram', 'wp-team-showcase-and-slider'),
+									'desc'	=> __('Enter Instagram link.', 'wp-team-showcase-and-slider'),
+									'icon'	=> 'fa fa-instagram'
+								),
+		'yt_link' 		=> array(
+									'name' 	=> __('YouTube', 'wp-team-showcase-and-slider'),
+									'desc'	=> __('Enter YouTube link.', 'wp-team-showcase-and-slider'),
+									'icon'	=> 'fa fa-youtube'
+								),
+		'pt_link' 		=> array(
+									'name' 	=> __('Pinterest', 'wp-team-showcase-and-slider'),
+									'desc'	=> __('Enter Pinterest link.', 'wp-team-showcase-and-slider'),
+									'icon'	=> 'fa fa-pinterest-p'
+							),
+		'tb_link' 		=> array(
+									'name' 	=> __('Tumblr', 'wp-team-showcase-and-slider'),
+									'desc'	=> __('Enter Tumblr link.', 'wp-team-showcase-and-slider'),
+									'icon'	=> 'fa fa-tumblr'
+							),
+		'fl_link' 		=> array(
+									'name' 	=> __('Flickr', 'wp-team-showcase-and-slider'),
+									'desc'	=> __('Enter Flickr link.', 'wp-team-showcase-and-slider'),
+									'icon'	=> 'fa fa-flickr'
+							),
+		'reddit_link'	=> array(
+									'name' 	=> __('Reddit', 'wp-team-showcase-and-slider'),
+									'desc'	=> __('Enter Reddit link.', 'wp-team-showcase-and-slider'),
+									'icon'	=> 'fa fa-reddit-alien'
+							),
+		'dl_link'		=> array(
+									'name' 	=> __('Delicious', 'wp-team-showcase-and-slider'),
+									'desc'	=> __('Enter Delicious link.', 'wp-team-showcase-and-slider'),
+									'icon'	=> 'fa fa-delicious'
+							),
+		'fs_link'		=> array(
+									'name' 	=> __('Foursquare', 'wp-team-showcase-and-slider'),
+									'desc'	=> __('Enter Foursquare link.', 'wp-team-showcase-and-slider'),
+									'icon'	=> 'fa fa-foursquare'
+							),
+		'vine_link'		=> array(
+									'name' 	=> __('Vine', 'wp-team-showcase-and-slider'),
+									'desc'	=> __('Enter Vine link.', 'wp-team-showcase-and-slider'),
+									'icon'	=> 'fa fa-vine'
+							),
+		'wp_link'		=> array(
+									'name' 	=> __('WordPress', 'wp-team-showcase-and-slider'),
+									'desc'	=> __('Enter WordPress profile link.', 'wp-team-showcase-and-slider'),
+									'icon'	=> 'fa fa-wordpress'
+							),
+		'mail'			=> array(
+									'name' 	=> __('Email', 'wp-team-showcase-and-slider'),
+									'desc'	=> __('Enter email address.', 'wp-team-showcase-and-slider'),
+									'icon'	=> 'fas fa-2x fa-envelope'
+							),
+		'web_link'		=> array(
+									'name' 	=> __('Website', 'wp-team-showcase-and-slider'),
+									'desc'	=> __('Enter website link.', 'wp-team-showcase-and-slider'),
+									'icon'	=> 'fa fa-desktop'
+							),
+		'phone'			=> array(
+									'name' 	=> __('Phone', 'wp-team-showcase-and-slider'),
+									'desc'	=> __('Enter phone number.', 'wp-team-showcase-and-slider'),
+									'icon'	=> 'fas fa-2x fa-phone'
+							),
+		'skype'			=> array(
+									'name' 	=> __('Skype', 'wp-team-showcase-and-slider'),
+									'desc'	=> __('Enter Skype id.', 'wp-team-showcase-and-slider'),
+									'icon'	=> 'fa fa-skype'
+							),
+	);
 
 	return apply_filters('wp_tsasp_social_scrvices', $services_arr ); 
 }
@@ -419,6 +425,9 @@ function wp_tsasp_old_browser() {
 /**
  * Determine if the browser is Safari or not (last updated 1.7)
  * @return boolean True if the browser is Safari otherwise false
+ *
+ * @package WP Team Showcase and Slider Pro
+ * @since 1.0.0
  */
 function wp_tsasp_check_browser_safari() {
 	
@@ -512,6 +521,7 @@ function wp_tsasp_slider_designs() {
 					);
 	return apply_filters('wp_tsasp_slider_designs', $design_arr );
 }
+
 /**
  * Function to get shortocdes registered in plugin
  * 
